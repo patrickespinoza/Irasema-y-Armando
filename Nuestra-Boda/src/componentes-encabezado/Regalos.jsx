@@ -1,165 +1,275 @@
-import React, { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import React from "react";
+import { motion } from "framer-motion";
 
 const Regalos = () => {
-  const [mostrarModal, setMostrarModal] = useState(false);
-  const [copiado, setCopiado] = useState(false);
-
-  const copiarCuenta = () => {
-    navigator.clipboard.writeText("1234 5678 9012 3456");
-    setCopiado(true);
-
-    setTimeout(() => {
-      setCopiado(false);
-    }, 2000);
-  };
-
   return (
-    <section className="w-full bg-[#F4E8DD] py-24 px-5 overflow-hidden">
+    <section className="relative w-full overflow-hidden bg-[#F8F4EC] px-5 py-20 sm:px-6 sm:py-24">
+      {/* DECORACIONES DE FONDO */}
+
+      <div
+        className="
+          pointer-events-none
+          absolute
+          -left-36
+          top-20
+          h-80
+          w-80
+          rounded-full
+          border
+          border-[#B64A1D]/15
+        "
+      />
+
+      <div
+        className="
+          pointer-events-none
+          absolute
+          -bottom-36
+          -right-32
+          h-80
+          w-80
+          rounded-full
+          border
+          border-[#C99A3D]/25
+        "
+      />
+
       <motion.div
         initial={{ opacity: 0, y: 60 }}
         whileInView={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.9 }}
+        transition={{
+          duration: 0.9,
+          ease: [0.22, 1, 0.36, 1],
+        }}
         viewport={{ once: true }}
         className="
-          max-w-5xl mx-auto
-          bg-white/70
-          backdrop-blur-xl
-          rounded-tl-[4rem]
-          rounded-br-[4rem]
-          rounded-tr-2xl
-          rounded-bl-2xl
-          border border-[#B88A8A]/30
-          shadow-[0_25px_70px_rgba(74,20,29,.18)]
+          relative
+          mx-auto
+          max-w-5xl
           overflow-hidden
+          rounded-bl-2xl
+          rounded-br-[4rem]
+          rounded-tl-[4rem]
+          rounded-tr-2xl
+          border
+          border-[#C99A3D]/50
+          bg-[#B64A1D]
+          shadow-[0_25px_70px_rgba(182,74,29,0.25)]
         "
       >
-        <div className="px-8 py-16 sm:px-14 text-center">
-          <p className="uppercase tracking-[.35em] text-[#B88A8A] text-sm font-semibold">
+        {/* LÍNEA DECORATIVA SUPERIOR */}
+
+        <div className="absolute left-0 top-0 h-1 w-full bg-[#C99A3D]" />
+
+        <div className="relative px-7 py-16 text-center sm:px-14 sm:py-20">
+          {/* ENCABEZADO */}
+
+          <motion.p
+            initial={{ opacity: 0, letterSpacing: "0.15em" }}
+            whileInView={{
+              opacity: 1,
+              letterSpacing: "0.35em",
+            }}
+            transition={{ duration: 0.8 }}
+            viewport={{ once: true }}
+            className="text-xs font-semibold uppercase text-white sm:text-sm"
+          >
             Con cariño
-          </p>
+          </motion.p>
 
-          <h2 className="font-playfair text-[#4A141D] text-5xl mt-4">
-            Regalos
-          </h2>
-
-          <div className="w-24 h-px bg-[#B88A8A] mx-auto mt-6"></div>
-
-          <motion.img
-            whileHover={{ scale: 1.05, rotate: 3 }}
-            transition={{ duration: 0.3 }}
-            src="/regalo1.png"
-            alt="Regalo"
-            className="w-28 mx-auto mt-12"
-          />
-
-          <p className="max-w-2xl mx-auto mt-10 text-[#4A141D] text-xl leading-10 font-playfair">
-            El mejor regalo será compartir este día contigo.
-            <br />
-            <br />
-            Si deseas tener un detalle con nosotros, puedes hacerlo mediante una
-            transferencia bancaria.
-          </p>
-
-          <button
-            type="button"
-            onClick={() => setMostrarModal(true)}
-            className="
-              mt-12
-              bg-[#4A141D]
-              text-[#F4E8DD]
-              px-10
-              py-4
-              rounded-full
-              text-lg
-              shadow-xl
-              hover:scale-105
-              transition
-            "
+          <motion.h2
+            initial={{ opacity: 0, y: 25 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{
+              duration: 0.75,
+              delay: 0.1,
+            }}
+            viewport={{ once: true }}
+            className="mt-5 font-playfair text-5xl text-white sm:text-6xl"
           >
-            Ver datos bancarios
-          </button>
-        </div>
-      </motion.div>
+            Lluvia de sobres
+          </motion.h2>
 
-      <AnimatePresence>
-        {mostrarModal && (
+          <div className="mx-auto mt-7 flex max-w-xs items-center gap-4">
+            <div className="h-px flex-1 bg-[#C99A3D]" />
+
+            <span className="text-lg text-white" aria-hidden="true">
+              ♡
+            </span>
+
+            <div className="h-px flex-1 bg-[#C99A3D]" />
+          </div>
+
+          {/* ÍCONO DE SOBRE */}
+
           <motion.div
+            initial={{
+              opacity: 0,
+              scale: 0.75,
+              rotate: -8,
+            }}
+            whileInView={{
+              opacity: 1,
+              scale: 1,
+              rotate: 0,
+            }}
+            transition={{
+              duration: 0.7,
+              delay: 0.2,
+            }}
+            viewport={{ once: true }}
+            whileHover={{
+              scale: 1.08,
+              rotate: 3,
+            }}
             className="
-              fixed inset-0
-              bg-black/60
-              backdrop-blur-md
-              flex items-center justify-center
-              z-[9999]
-              px-5
+              mx-auto
+              mt-10
+              flex
+              h-28
+              w-28
+              items-center
+              justify-center
+              rounded-full
+              border
+              border-white/60
+              bg-white
+              text-black
+              shadow-[0_15px_35px_rgba(0,0,0,0.2)]
+              sm:h-32
+              sm:w-32
             "
-            onClick={() => setMostrarModal(false)}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
           >
-            <motion.div
-              onClick={(e) => e.stopPropagation()}
-              initial={{ scale: 0.85, opacity: 0, y: 60 }}
-              animate={{ scale: 1, opacity: 1, y: 0 }}
-              exit={{ scale: 0.85, opacity: 0, y: 60 }}
-              transition={{ duration: 0.35 }}
-              className="
-                relative
-                w-full
-                max-w-[360px]
-                rounded-[2rem]
-                bg-[#4A141D]
-                text-[#F4E8DD]
-                p-8
-                shadow-[0_30px_80px_rgba(0,0,0,.4)]
-              "
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="58"
+              height="58"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="1.3"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              aria-hidden="true"
             >
-              <button
-                type="button"
-                onClick={() => setMostrarModal(false)}
-                className="absolute top-4 right-5 text-3xl leading-none"
-              >
-                ×
-              </button>
+              <rect x="2.5" y="5" width="19" height="14" rx="2" />
+              <path d="m3 7 9 6 9-6" />
+              <path d="m3 18 6.5-6" />
+              <path d="m21 18-6.5-6" />
+            </svg>
+          </motion.div>
 
-              <h3 className="font-playfair text-3xl">Santander</h3>
+          {/* MENSAJE */}
 
-              <div className="w-12 h-8 rounded bg-[#E6C15B] mt-6"></div>
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{
+              duration: 0.8,
+              delay: 0.25,
+            }}
+            viewport={{ once: true }}
+            className="mx-auto mt-10 max-w-2xl"
+          >
+            <p className="font-playfair text-xl leading-9 text-white sm:text-2xl sm:leading-10">
+              El mejor regalo será compartir este día contigo.
+            </p>
 
-              <p className="tracking-[.18em] text-lg mt-8">
-                1234 5678 9012 3456
-              </p>
+            <div className="mx-auto my-7 h-px w-16 bg-[#C99A3D]" />
 
-              <p className="mt-6 text-sm text-[#F4E8DD]/70">Titular</p>
+            <p className="text-base leading-8 text-white sm:text-lg">
+              Si deseas tener un detalle con nosotros, contaremos con lluvia de
+              sobres durante nuestra celebración.
+            </p>
+          </motion.div>
 
-              <p className="font-playfair">Juan Pérez</p>
+          {/* TARJETA INFORMATIVA */}
 
-              <button
-                type="button"
-                onClick={copiarCuenta}
+          <motion.div
+            initial={{ opacity: 0, y: 35 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{
+              duration: 0.8,
+              delay: 0.35,
+            }}
+            viewport={{ once: true }}
+            className="
+              mx-auto
+              mt-10
+              max-w-xl
+              rounded-3xl
+              border
+              border-white/40
+              bg-white
+              px-6
+              py-7
+              shadow-[0_15px_35px_rgba(0,0,0,0.15)]
+              sm:px-9
+            "
+          >
+            <div className="flex flex-col items-center justify-center gap-4 sm:flex-row">
+              <div
                 className="
-                  w-full
-                  mt-8
-                  bg-[#F4E8DD]
-                  text-[#4A141D]
-                  py-3
+                  flex
+                  h-14
+                  w-14
+                  shrink-0
+                  items-center
+                  justify-center
                   rounded-full
-                  font-semibold
+                  bg-[#B64A1D]
+                  text-white
                 "
               >
-                Copiar número
-              </button>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="28"
+                  height="28"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="1.5"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  aria-hidden="true"
+                >
+                  <path d="M20 12v9H4v-9" />
+                  <path d="M2 7h20v5H2z" />
+                  <path d="M12 7v14" />
+                  <path d="M12 7H7.5A2.5 2.5 0 1 1 10 4.5C10 7 12 7 12 7Z" />
+                  <path d="M12 7h4.5A2.5 2.5 0 1 0 14 4.5C14 7 12 7 12 7Z" />
+                </svg>
+              </div>
 
-              {copiado && (
-                <p className="text-center mt-4 text-[#B88A8A]">
-                  Número copiado
+              <div className="text-center sm:text-left">
+                <p className="font-playfair text-xl text-black">
+                  Lluvia de sobres
                 </p>
-              )}
-            </motion.div>
+
+                <p className="mt-2 text-sm leading-6 text-black sm:text-base">
+                  Podrás depositar el efectivo en tu sobre en el espacio destinado durante el
+                  evento.
+                </p>
+              </div>
+            </div>
           </motion.div>
-        )}
-      </AnimatePresence>
+
+          {/* AGRADECIMIENTO */}
+
+          <motion.p
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            transition={{
+              duration: 0.8,
+              delay: 0.45,
+            }}
+            viewport={{ once: true }}
+            className="mt-10 font-cursiveDancing text-4xl text-white sm:text-5xl"
+          >
+            Gracias por acompañarnos
+          </motion.p>
+        </div>
+      </motion.div>
     </section>
   );
 };
