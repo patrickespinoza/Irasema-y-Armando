@@ -1,442 +1,541 @@
-"use client";
+import React, { useState } from "react";
+import { motion } from "framer-motion";
 
-import React, { useEffect, useRef, useState } from "react";
-import { AnimatePresence, motion } from "framer-motion";
-import { Music, Pause, Play, Volume2, VolumeX, X } from "lucide-react";
+const Confirmacion = () => {
+  const [nombreInvitado, setNombreInvitado] = useState("");
+  const [mensajeInvitado, setMensajeInvitado] = useState("");
+  const [asistencia, setAsistencia] = useState("");
+  const [invitados, setInvitados] = useState("");
+  const [error, setError] = useState("");
 
-const Musica = () => {
-  const audioRef = useRef(null);
+  const TELEFONO_NOVIA = "526311139649";
+  const TELEFONO_NOVIO = "526311160377";
 
-  const [mostrarModal, setMostrarModal] = useState(true);
-  const [reproduciendo, setReproduciendo] = useState(false);
-  const [silenciado, setSilenciado] = useState(false);
-  const [cargando, setCargando] = useState(false);
-
-  useEffect(() => {
-    const audio = audioRef.current;
-
-    if (!audio) return;
-
-    audio.volume = 0.45;
-
-    const detenerCarga = () => {
-      setCargando(false);
-    };
-
-    const detectarReproduccion = () => {
-      setReproduciendo(true);
-      setCargando(false);
-    };
-
-    const detectarPausa = () => {
-      setReproduciendo(false);
-    };
-
-    audio.addEventListener("playing", detectarReproduccion);
-    audio.addEventListener("pause", detectarPausa);
-    audio.addEventListener("canplay", detenerCarga);
-    audio.addEventListener("error", detenerCarga);
-
-    return () => {
-      audio.removeEventListener("playing", detectarReproduccion);
-      audio.removeEventListener("pause", detectarPausa);
-      audio.removeEventListener("canplay", detenerCarga);
-      audio.removeEventListener("error", detenerCarga);
-    };
-  }, []);
-
-  const reproducirMusica = async () => {
-    const audio = audioRef.current;
-
-    if (!audio) return;
-
-    try {
-      setCargando(true);
-      audio.muted = false;
-      setSilenciado(false);
-
-      await audio.play();
-
-      setReproduciendo(true);
-      setMostrarModal(false);
-    } catch (error) {
-      console.error("No se pudo reproducir la música:", error);
-      setCargando(false);
-      setMostrarModal(false);
-    }
-  };
-
-  const continuarSinMusica = () => {
-    const audio = audioRef.current;
-
-    if (audio) {
-      audio.pause();
-      audio.currentTime = 0;
+  const enviarWhatsApp = (telefono, lado) => {
+    if (!nombreInvitado.trim() || !asistencia) {
+      setError("Completa tu nombre y confirma tu asistencia.");
+      return;
     }
 
-    setReproduciendo(false);
-    setMostrarModal(false);
-  };
-
-  const alternarReproduccion = async () => {
-    const audio = audioRef.current;
-
-    if (!audio) return;
-
-    if (audio.paused) {
-      try {
-        setCargando(true);
-        await audio.play();
-        setReproduciendo(true);
-      } catch (error) {
-        console.error("No se pudo reproducir la música:", error);
-        setCargando(false);
-      }
-    } else {
-      audio.pause();
-      setReproduciendo(false);
+    if (
+      asistencia === "Sí asistiré" &&
+      (!invitados || Number(invitados) < 1)
+    ) {
+      setError("Indica el número de invitados que asistirán.");
+      return;
     }
-  };
 
-  const alternarSilencio = () => {
-    const audio = audioRef.current;
+    setError("");
 
-    if (!audio) return;
+    const cantidadInvitados =
+      asistencia === "Sí asistiré" ? invitados : "No aplica";
 
-    audio.muted = !audio.muted;
-    setSilenciado(audio.muted);
+    const mensaje = `
+💍 *Confirmación de asistencia*
+*Boda de Irasema y Armando*
+
+Hola, confirmo mi asistencia por medio de la invitación digital.
+
+*Nombre:* ${nombreInvitado.trim()}
+*Respuesta:* ${asistencia}
+*Número de invitados:* ${cantidadInvitados}
+*Confirmación enviada a:* ${lado}
+*Mensaje:* ${mensajeInvitado.trim() || "Sin mensaje adicional"}
+    `.trim();
+
+    const enlaceWhatsApp = `https://wa.me/${telefono}?text=${encodeURIComponent(
+      mensaje
+    )}`;
+
+    window.open(enlaceWhatsApp, "_blank", "noopener,noreferrer");
   };
 
   return (
-    <>
-      <audio
-        ref={audioRef}
-        src="/musica.mp3"
-        loop
-        preload="auto"
+    <section className="relative w-full overflow-hidden bg-[#174E3D] px-5 py-20 sm:px-6 sm:py-24">
+      {/* DECORACIONES DE FONDO */}
+
+      <div
+        className="
+          pointer-events-none
+          absolute
+          -left-36
+          top-20
+          h-80
+          w-80
+          rounded-full
+          border
+          border-white/10
+        "
       />
 
-      <AnimatePresence>
-        {mostrarModal && (
+      <div
+        className="
+          pointer-events-none
+          absolute
+          -bottom-36
+          -right-32
+          h-80
+          w-80
+          rounded-full
+          border
+          border-[#C99A3D]/30
+        "
+      />
+
+      <div
+        className="
+          pointer-events-none
+          absolute
+          right-12
+          top-16
+          h-2
+          w-2
+          rounded-full
+          bg-[#C99A3D]
+          opacity-70
+        "
+      />
+
+      <div
+        className="
+          pointer-events-none
+          absolute
+          bottom-20
+          left-16
+          h-2
+          w-2
+          rounded-full
+          bg-[#C99A3D]
+          opacity-70
+        "
+      />
+
+      {/* TARJETA PRINCIPAL */}
+
+      <motion.div
+        initial={{ opacity: 0, y: 55 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        transition={{
+          duration: 0.9,
+          ease: "easeOut",
+        }}
+        viewport={{ once: true }}
+        className="
+          relative
+          mx-auto
+          max-w-4xl
+          overflow-hidden
+          rounded-bl-2xl
+          rounded-br-[4rem]
+          rounded-tl-[4rem]
+          rounded-tr-2xl
+          border
+          border-[#C99A3D]/50
+          bg-[#F8F4EC]
+          shadow-[0_30px_80px_rgba(0,0,0,0.35)]
+        "
+      >
+        {/* LÍNEA SUPERIOR */}
+
+        <div className="absolute left-0 top-0 h-1 w-full bg-[#C99A3D]" />
+
+        <div className="px-6 py-14 sm:px-12 sm:py-16 md:px-16">
+          {/* ENCABEZADO */}
+
           <motion.div
-            className="
-              fixed
-              inset-0
-              z-[9999]
-              flex
-              items-center
-              justify-center
-              bg-black/65
-              px-5
-              backdrop-blur-sm
-            "
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
+            initial={{ opacity: 0, y: 25 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{
+              duration: 0.8,
+              delay: 0.1,
+            }}
+            viewport={{ once: true }}
+            className="mx-auto max-w-2xl text-center"
           >
-            <motion.div
-              className="
-                relative
-                w-full
-                max-w-[420px]
-                overflow-hidden
-                rounded-tl-[42px]
-                rounded-br-[42px]
-                border
-                border-[#b89b5e]/40
-                bg-[#f8f5ef]
-                px-7
-                py-10
-                text-center
-                shadow-[0_25px_70px_rgba(0,0,0,0.35)]
-                sm:px-10
-                sm:py-12
-              "
-              initial={{
-                opacity: 0,
-                y: 35,
-                scale: 0.94,
-              }}
-              animate={{
-                opacity: 1,
-                y: 0,
-                scale: 1,
-              }}
-              exit={{
-                opacity: 0,
-                y: 20,
-                scale: 0.96,
-              }}
-              transition={{
-                duration: 0.55,
-                ease: "easeOut",
-              }}
-            >
-              <button
-                type="button"
-                onClick={continuarSinMusica}
-                aria-label="Cerrar ventana de música"
-                className="
-                  absolute
-                  right-5
-                  top-5
-                  flex
-                  h-9
-                  w-9
-                  items-center
-                  justify-center
-                  rounded-full
-                  border
-                  border-[#b89b5e]/30
-                  bg-white/70
-                  text-[#5e6650]
-                  transition
-                  hover:scale-105
-                  hover:bg-white
-                "
-              >
-                <X size={17} />
-              </button>
+            <p className="text-xs font-semibold uppercase tracking-[0.35em] text-black sm:text-sm">
+              RSVP
+            </p>
 
-              <motion.div
-                className="
-                  mx-auto
-                  mb-6
-                  flex
-                  h-20
-                  w-20
-                  items-center
-                  justify-center
-                  rounded-full
-                  border
-                  border-[#b89b5e]/35
-                  bg-white
-                  text-[#b89b5e]
-                  shadow-[0_10px_30px_rgba(184,155,94,0.18)]
-                "
-                animate={{
-                  rotate: reproduciendo ? 360 : 0,
-                }}
-                transition={{
-                  duration: 8,
-                  repeat: reproduciendo ? Infinity : 0,
-                  ease: "linear",
-                }}
-              >
-                <Music size={31} strokeWidth={1.5} />
-              </motion.div>
+            <h2 className="mt-4 font-playfair text-4xl leading-tight text-black sm:text-5xl md:text-6xl">
+              Confirmar asistencia
+            </h2>
 
-              <p
-                className="
-                  mb-3
-                  text-xs
-                  uppercase
-                  tracking-[0.32em]
-                  text-[#b89b5e]
-                "
-              >
-                Una experiencia especial
-              </p>
+            <div className="mx-auto mt-7 flex max-w-xs items-center gap-4">
+              <div className="h-px flex-1 bg-[#C99A3D]" />
 
-              <h2
-                className="
-                  mb-4
-                  font-['Playfair_Display']
-                  text-3xl
-                  font-medium
-                  text-[#5e6650]
-                  sm:text-4xl
-                "
-              >
-                Música para acompañarte
-              </h2>
+              <span className="text-lg text-black" aria-hidden="true">
+                ♡
+              </span>
 
-              <p
-                className="
-                  mx-auto
-                  mb-8
-                  max-w-[310px]
-                  text-sm
-                  leading-7
-                  text-[#5e6650]/75
-                "
-              >
-                Hemos preparado una canción especial para acompañarte durante
-                esta invitación.
-              </p>
+              <div className="h-px flex-1 bg-[#C99A3D]" />
+            </div>
 
-              <div className="flex flex-col gap-3">
-                <button
-                  type="button"
-                  onClick={reproducirMusica}
-                  disabled={cargando}
-                  className="
-                    flex
-                    w-full
-                    items-center
-                    justify-center
-                    gap-3
-                    rounded-full
-                    bg-[#5e6650]
-                    px-6
-                    py-4
-                    text-sm
-                    uppercase
-                    tracking-[0.16em]
-                    text-white
-                    transition
-                    hover:-translate-y-0.5
-                    hover:bg-[#4f5744]
-                    disabled:cursor-not-allowed
-                    disabled:opacity-70
-                  "
-                >
-                  {cargando ? (
-                    <>
-                      <span
-                        className="
-                          h-4
-                          w-4
-                          animate-spin
-                          rounded-full
-                          border-2
-                          border-white/40
-                          border-t-white
-                        "
-                      />
-                      Cargando
-                    </>
-                  ) : (
-                    <>
-                      <Play size={17} fill="currentColor" />
-                      Escuchar música
-                    </>
-                  )}
-                </button>
-
-                <button
-                  type="button"
-                  onClick={continuarSinMusica}
-                  className="
-                    w-full
-                    rounded-full
-                    border
-                    border-[#b89b5e]/45
-                    bg-transparent
-                    px-6
-                    py-4
-                    text-sm
-                    uppercase
-                    tracking-[0.14em]
-                    text-[#5e6650]
-                    transition
-                    hover:bg-white
-                  "
-                >
-                  Continuar sin música
-                </button>
-              </div>
-            </motion.div>
+            <p className="mt-7 leading-7 text-black sm:text-lg">
+              Por favor confirma tu asistencia. Nos encantará compartir este día
+              tan especial contigo.
+            </p>
           </motion.div>
-        )}
-      </AnimatePresence>
 
-      {!mostrarModal && (
-        <motion.div
-          className="
-            fixed
-            bottom-5
-            right-5
-            z-[9998]
-            flex
-            items-center
-            gap-2
-            rounded-full
-            border
-            border-[#b89b5e]/35
-            bg-[#f8f5ef]/95
-            p-2
-            shadow-[0_12px_35px_rgba(0,0,0,0.18)]
-            backdrop-blur-md
-          "
-          initial={{
-            opacity: 0,
-            y: 25,
-            scale: 0.9,
-          }}
-          animate={{
-            opacity: 1,
-            y: 0,
-            scale: 1,
-          }}
-          transition={{
-            duration: 0.45,
-          }}
-        >
-          <button
-            type="button"
-            onClick={alternarReproduccion}
-            aria-label={
-              reproduciendo ? "Pausar música" : "Reproducir música"
-            }
-            className="
-              flex
-              h-11
-              w-11
-              items-center
-              justify-center
-              rounded-full
-              bg-[#5e6650]
-              text-white
-              transition
-              hover:scale-105
-            "
-          >
-            {cargando ? (
-              <span
+          {/* FORMULARIO */}
+
+          <div className="mx-auto mt-10 max-w-2xl space-y-6">
+            {/* NOMBRE */}
+
+            <div>
+              <label
+                htmlFor="nombreInvitado"
+                className="mb-2 block text-sm font-semibold text-black"
+              >
+                Nombre y apellido
+              </label>
+
+              <input
+                id="nombreInvitado"
+                type="text"
+                autoComplete="name"
+                placeholder="Escribe tu nombre"
+                value={nombreInvitado}
+                onChange={(event) => {
+                  setNombreInvitado(event.target.value);
+                  setError("");
+                }}
                 className="
-                  h-4
-                  w-4
-                  animate-spin
-                  rounded-full
-                  border-2
-                  border-white/40
-                  border-t-white
+                  w-full
+                  rounded-2xl
+                  border
+                  border-[#174E3D]/25
+                  bg-white
+                  px-5
+                  py-4
+                  text-black
+                  outline-none
+                  placeholder:text-black/45
+                  focus:border-[#174E3D]
+                  focus:ring-2
+                  focus:ring-[#174E3D]/20
                 "
               />
-            ) : reproduciendo ? (
-              <Pause size={18} fill="currentColor" />
-            ) : (
-              <Play size={18} fill="currentColor" />
-            )}
-          </button>
+            </div>
 
-          <button
-            type="button"
-            onClick={alternarSilencio}
-            aria-label={silenciado ? "Activar sonido" : "Silenciar música"}
-            className="
-              flex
-              h-10
-              w-10
-              items-center
-              justify-center
-              rounded-full
-              text-[#b89b5e]
-              transition
-              hover:bg-white
-            "
-          >
-            {silenciado ? (
-              <VolumeX size={19} />
-            ) : (
-              <Volume2 size={19} />
+            {/* ASISTENCIA */}
+
+            <div>
+              <p className="mb-3 text-sm font-semibold text-black">
+                ¿Podrás acompañarnos?
+              </p>
+
+              <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                <button
+                  type="button"
+                  onClick={() => {
+                    setAsistencia("Sí asistiré");
+                    setError("");
+                  }}
+                  className={`
+                    w-full
+                    rounded-2xl
+                    border
+                    px-5
+                    py-4
+                    font-playfair
+                    transition
+                    duration-300
+                    ${
+                      asistencia === "Sí asistiré"
+                        ? "border-[#174E3D] bg-[#174E3D] text-white shadow-[0_10px_25px_rgba(23,78,61,0.2)]"
+                        : "border-[#174E3D]/25 bg-white text-black hover:border-[#174E3D]"
+                    }
+                  `}
+                >
+                  Sí asistiré
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => {
+                    setAsistencia("No podré asistir");
+                    setInvitados("");
+                    setError("");
+                  }}
+                  className={`
+                    w-full
+                    rounded-2xl
+                    border
+                    px-5
+                    py-4
+                    font-playfair
+                    transition
+                    duration-300
+                    ${
+                      asistencia === "No podré asistir"
+                        ? "border-[#7A1835] bg-[#7A1835] text-white shadow-[0_10px_25px_rgba(122,24,53,0.2)]"
+                        : "border-[#7A1835]/25 bg-white text-black hover:border-[#7A1835]"
+                    }
+                  `}
+                >
+                  No asistiré
+                </button>
+              </div>
+            </div>
+
+            {/* NÚMERO DE INVITADOS */}
+
+            {asistencia === "Sí asistiré" && (
+              <motion.div
+                initial={{
+                  opacity: 0,
+                  height: 0,
+                  y: -10,
+                }}
+                animate={{
+                  opacity: 1,
+                  height: "auto",
+                  y: 0,
+                }}
+                transition={{ duration: 0.3 }}
+              >
+                <label
+                  htmlFor="numeroInvitados"
+                  className="mb-2 block text-sm font-semibold text-black"
+                >
+                  Número de invitados
+                </label>
+
+                <input
+                  id="numeroInvitados"
+                  type="number"
+                  min="1"
+                  inputMode="numeric"
+                  placeholder="¿Cuántas personas asistirán?"
+                  value={invitados}
+                  onChange={(event) => {
+                    setInvitados(event.target.value);
+                    setError("");
+                  }}
+                  className="
+                    w-full
+                    rounded-2xl
+                    border
+                    border-[#174E3D]/25
+                    bg-white
+                    px-5
+                    py-4
+                    text-black
+                    outline-none
+                    placeholder:text-black/45
+                    focus:border-[#174E3D]
+                    focus:ring-2
+                    focus:ring-[#174E3D]/20
+                  "
+                />
+              </motion.div>
             )}
-          </button>
-        </motion.div>
-      )}
-    </>
+
+            {/* MENSAJE */}
+
+            <div>
+              <label
+                htmlFor="mensajeInvitado"
+                className="mb-2 block text-sm font-semibold text-black"
+              >
+                Mensaje para los novios
+              </label>
+
+              <textarea
+                id="mensajeInvitado"
+                placeholder="Escribe un mensaje opcional"
+                value={mensajeInvitado}
+                onChange={(event) =>
+                  setMensajeInvitado(event.target.value)
+                }
+                rows="4"
+                className="
+                  w-full
+                  resize-none
+                  rounded-2xl
+                  border
+                  border-[#174E3D]/25
+                  bg-white
+                  px-5
+                  py-4
+                  text-black
+                  outline-none
+                  placeholder:text-black/45
+                  focus:border-[#174E3D]
+                  focus:ring-2
+                  focus:ring-[#174E3D]/20
+                "
+              />
+            </div>
+
+            {/* ERROR */}
+
+            {error && (
+              <motion.p
+                initial={{ opacity: 0, y: -8 }}
+                animate={{ opacity: 1, y: 0 }}
+                role="alert"
+                className="
+                  rounded-xl
+                  border
+                  border-[#7A1835]/30
+                  bg-[#7A1835]/10
+                  px-4
+                  py-3
+                  text-center
+                  text-sm
+                  text-black
+                "
+              >
+                {error}
+              </motion.p>
+            )}
+
+            {/* SELECCIÓN DE WHATSAPP */}
+
+            <div
+              className="
+                rounded-3xl
+                border
+                border-[#C99A3D]/50
+                bg-white
+                px-5
+                py-6
+                text-center
+              "
+            >
+              <p className="font-playfair text-lg text-black">
+                ¿A quién deseas enviar tu confirmación?
+              </p>
+
+              <p className="mt-2 text-sm leading-6 text-black">
+                Selecciona a la novia o al novio para continuar en WhatsApp.
+              </p>
+            </div>
+
+            {/* BOTONES DE WHATSAPP */}
+
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+              <motion.button
+                type="button"
+                onClick={() =>
+                  enviarWhatsApp(TELEFONO_NOVIA, "la novia")
+                }
+                whileHover={{
+                  scale: 1.02,
+                  y: -2,
+                }}
+                whileTap={{ scale: 0.97 }}
+                className="
+                  flex
+                  w-full
+                  items-center
+                  justify-center
+                  gap-3
+                  rounded-full
+                  bg-[#6B315F]
+                  px-5
+                  py-4
+                  font-playfair
+                  text-base
+                  text-white
+                  shadow-[0_14px_30px_rgba(107,49,95,0.25)]
+                "
+              >
+                <WhatsAppIcon />
+
+                Confirmar a la novia
+              </motion.button>
+
+              <motion.button
+                type="button"
+                onClick={() =>
+                  enviarWhatsApp(TELEFONO_NOVIO, "el novio")
+                }
+                whileHover={{
+                  scale: 1.02,
+                  y: -2,
+                }}
+                whileTap={{ scale: 0.97 }}
+                className="
+                  flex
+                  w-full
+                  items-center
+                  justify-center
+                  gap-3
+                  rounded-full
+                  bg-[#174E3D]
+                  px-5
+                  py-4
+                  font-playfair
+                  text-base
+                  text-white
+                  shadow-[0_14px_30px_rgba(23,78,61,0.25)]
+                "
+              >
+                <WhatsAppIcon />
+
+                Confirmar al novio
+              </motion.button>
+            </div>
+
+            {/* NÚMEROS DE CONTACTO */}
+
+            <div className="grid grid-cols-1 gap-3 pt-2 text-center sm:grid-cols-2">
+              <p className="text-sm text-black">
+                Novia: 631 113 9649
+              </p>
+
+              <p className="text-sm text-black">
+                Novio: 631 116 0377
+              </p>
+            </div>
+          </div>
+
+          {/* CIERRE */}
+
+          <motion.div
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            transition={{
+              duration: 0.8,
+              delay: 0.3,
+            }}
+            viewport={{ once: true }}
+            className="mt-12 text-center"
+          >
+            <p className="font-cursiveDancing text-4xl text-black sm:text-5xl">
+              ¡Te esperamos!
+            </p>
+
+            <div className="mx-auto mt-5 h-px w-20 bg-[#C99A3D]" />
+          </motion.div>
+        </div>
+      </motion.div>
+    </section>
   );
 };
 
-export default Musica;
+const WhatsAppIcon = () => {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="21"
+      height="21"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.8"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+    >
+      <path d="M3 21l1.65-3.8A9 9 0 1 1 8 20.25L3 21Z" />
+      <path d="M8.5 8.5c.5 3 2 4.5 5 5" />
+      <path d="M8.25 7.75l1.5-.25.75 2-1 1" />
+      <path d="M13.5 13.5l1-1 2 .75-.25 1.5" />
+    </svg>
+  );
+};
+
+export default Confirmacion;
