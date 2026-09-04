@@ -4,9 +4,9 @@ import { motion } from "framer-motion";
 const Celebracion = ({
   titulo = "Celebración",
   fecha = "30 Octubre 2026",
-  hora = "8:30 PM",
+  hora = "9:00 PM",
   lugar = "Salón Jardín Ajijic",
-  direccion = "Blvd. del Raquet 21, California, 84066 Heroica Nogales, Son.",
+  direccion = "Blvd. del Raquet 21, Nuevo Nogales, 84066 Heroica Nogales, Son.",
   ubicacion = "https://maps.app.goo.gl/MAVAh6Ud9g4WEzW99",
 }) => {
   return (
@@ -97,28 +97,6 @@ const Celebracion = ({
         <div className="relative overflow-hidden bg-[#0F6670] px-6 py-12 text-center sm:px-12 sm:py-14">
           <div className="absolute left-0 top-0 h-1 w-full bg-[#C99A3D]" />
 
-          <motion.p
-            initial={{
-              opacity: 0,
-              letterSpacing: "0.15em",
-            }}
-            whileInView={{
-              opacity: 1,
-              letterSpacing: "0.35em",
-            }}
-            transition={{ duration: 0.8 }}
-            viewport={{ once: true }}
-            className="
-              mb-4
-              text-xs
-              font-semibold
-              uppercase
-              text-white
-              sm:text-sm
-            "
-          >
-            Día especial
-          </motion.p>
 
           <motion.h2
             initial={{ opacity: 0, y: 20 }}

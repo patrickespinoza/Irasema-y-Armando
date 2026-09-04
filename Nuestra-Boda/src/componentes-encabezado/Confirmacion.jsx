@@ -170,8 +170,8 @@ Hola, confirmo mi asistencia por medio de la invitación digital.
               <div className="h-px flex-1 bg-[#C99A3D]" />
             </div>
 
-            <p className="mt-7 leading-7 text-black sm:text-lg">
-              Por favor confirma tu asistencia. Nos encantará compartir este día
+            <p className="mt-7 leading-7 text-black sm:text-xl">
+              La invitacion es para 2 personas por favor confirma tu asistencia antes del 15 de Octubre. Nos encantará compartir este día
               tan especial contigo.
             </p>
           </motion.div>

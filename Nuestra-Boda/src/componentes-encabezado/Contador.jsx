@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 
 const Contador = ({
   titulo = "¡Estás invitado!",
-  texto = "Nos encantaría que seas parte de este momento tan especial para nosotros.",
+  texto = "A celebrar nuestra union y nos encantaría que seas parte de este momento tan especial para nosotros.",
   frase = "¡Falta poco!",
   fecha = "2026-10-30T00:00:00",
 }) => {
