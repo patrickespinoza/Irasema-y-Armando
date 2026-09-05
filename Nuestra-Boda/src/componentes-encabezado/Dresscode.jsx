@@ -18,7 +18,7 @@ const coloresHombres = [
 
 const Vestimenta = ({
   imagenMujeres = "/mujeres.png",
-  imagenHombres = "/hombres.jpg",
+  imagenHombres = "/hombresv.png",
 }) => {
   return (
     <section className="relative w-full overflow-hidden bg-[#F8F4EC] px-5 py-20 sm:px-6 sm:py-24">
