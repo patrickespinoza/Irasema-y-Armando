@@ -5,7 +5,6 @@ const Confirmacion = () => {
   const [nombreInvitado, setNombreInvitado] = useState("");
   const [mensajeInvitado, setMensajeInvitado] = useState("");
   const [asistencia, setAsistencia] = useState("");
-  const [invitados, setInvitados] = useState("");
   const [error, setError] = useState("");
 
   const TELEFONO_NOVIA = "526311139649";
@@ -17,18 +16,7 @@ const Confirmacion = () => {
       return;
     }
 
-    if (
-      asistencia === "Sí asistiré" &&
-      (!invitados || Number(invitados) < 1)
-    ) {
-      setError("Indica el número de invitados que asistirán.");
-      return;
-    }
-
     setError("");
-
-    const cantidadInvitados =
-      asistencia === "Sí asistiré" ? invitados : "No aplica";
 
     const mensaje = `
 💍 *Confirmación de asistencia*
@@ -38,7 +26,6 @@ Hola, confirmo mi asistencia por medio de la invitación digital.
 
 *Nombre:* ${nombreInvitado.trim()}
 *Respuesta:* ${asistencia}
-*Número de invitados:* ${cantidadInvitados}
 *Confirmación enviada a:* ${lado}
 *Mensaje:* ${mensajeInvitado.trim() || "Sin mensaje adicional"}
     `.trim();
@@ -171,8 +158,9 @@ Hola, confirmo mi asistencia por medio de la invitación digital.
             </div>
 
             <p className="mt-7 leading-7 text-black sm:text-xl">
-              La invitacion es para 2 personas por favor confirma tu asistencia antes del 15 de Octubre. Nos encantará compartir este día
-              tan especial contigo.
+              La invitación es para 2 personas. Por favor, confirma tu
+              asistencia antes del 15 de octubre. Nos encantará compartir este
+              día tan especial contigo.
             </p>
           </motion.div>
 
@@ -254,7 +242,6 @@ Hola, confirmo mi asistencia por medio de la invitación digital.
                   type="button"
                   onClick={() => {
                     setAsistencia("No podré asistir");
-                    setInvitados("");
                     setError("");
                   }}
                   className={`
@@ -278,59 +265,6 @@ Hola, confirmo mi asistencia por medio de la invitación digital.
               </div>
             </div>
 
-            {/* NÚMERO DE INVITADOS */}
-
-            {asistencia === "Sí asistiré" && (
-              <motion.div
-                initial={{
-                  opacity: 0,
-                  height: 0,
-                  y: -10,
-                }}
-                animate={{
-                  opacity: 1,
-                  height: "auto",
-                  y: 0,
-                }}
-                transition={{ duration: 0.3 }}
-              >
-                <label
-                  htmlFor="numeroInvitados"
-                  className="mb-2 block text-sm font-semibold text-black"
-                >
-                  Número de invitados
-                </label>
-
-                <input
-                  id="numeroInvitados"
-                  type="number"
-                  min="1"
-                  inputMode="numeric"
-                  placeholder="¿Cuántas personas asistirán?"
-                  value={invitados}
-                  onChange={(event) => {
-                    setInvitados(event.target.value);
-                    setError("");
-                  }}
-                  className="
-                    w-full
-                    rounded-2xl
-                    border
-                    border-[#174E3D]/25
-                    bg-white
-                    px-5
-                    py-4
-                    text-black
-                    outline-none
-                    placeholder:text-black/45
-                    focus:border-[#174E3D]
-                    focus:ring-2
-                    focus:ring-[#174E3D]/20
-                  "
-                />
-              </motion.div>
-            )}
-
             {/* MENSAJE */}
 
             <div>
@@ -345,9 +279,10 @@ Hola, confirmo mi asistencia por medio de la invitación digital.
                 id="mensajeInvitado"
                 placeholder="Escribe un mensaje opcional"
                 value={mensajeInvitado}
-                onChange={(event) =>
-                  setMensajeInvitado(event.target.value)
-                }
+                onChange={(event) => {
+                  setMensajeInvitado(event.target.value);
+                  setError("");
+                }}
                 rows="4"
                 className="
                   w-full
@@ -443,7 +378,6 @@ Hola, confirmo mi asistencia por medio de la invitación digital.
                 "
               >
                 <WhatsAppIcon />
-
                 Confirmar a la novia
               </motion.button>
 
@@ -474,13 +408,10 @@ Hola, confirmo mi asistencia por medio de la invitación digital.
                 "
               >
                 <WhatsAppIcon />
-
                 Confirmar al novio
               </motion.button>
             </div>
-
           </div>
-
         </div>
       </motion.div>
     </section>
